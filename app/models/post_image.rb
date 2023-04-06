@@ -2,7 +2,12 @@ class PostImage < ApplicationRecord
   has_one_attached :image
   # アソシエーション
   belongs_to :user
+  has_many :post_comment, dependent: :destroy
+  has_many :favorite, dependent: :destroy
   
+  def favorited_by?(user)
+    favorite.exists?(user_id: user.id)
+  end
   
   # 画像が投稿されていない場合はエラーが出るのを回避するメソッドの基本
   # def get_image
